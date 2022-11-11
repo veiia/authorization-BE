@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  auth:
+    container_name: "authorization-BE"
+    build: .
+    command: ./auth-app
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+    ports:
+      - "8008:8008"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+  db:
+    image: postgres:15-alpine
+    container_name: "auth_db"
+    #    env_file:
+    #      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5433
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d qtr_portal -U qtr_portal" ]
+      interval: 5s
+      retries: 5
+    restart: always
+
+  #  redis:
+  #    image: redis
+  # kafka ?
+
+volumes:
+  postgres_data:
