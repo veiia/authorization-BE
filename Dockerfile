@@ -7,7 +7,11 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o auth-app ./cmd/main.go
+
+# make wait_psql.sh executable
+RUN chmod +x wait_psql.sh
+
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o auth-app ./cmd/auth
 
 EXPOSE 8008
 
