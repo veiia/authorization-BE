@@ -4,10 +4,16 @@ services:
   auth:
     container_name: "authorization-BE"
     build: .
+#    command: ./wait_psql.sh db ./auth-app
     command: ./auth-app
     restart: always
+    networks:
+      - migration
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+      - DB_PASSWORD=${DB_PASSWORD}
     ports:
       - "8008:8008"
     depends_on:
@@ -17,26 +23,41 @@ services:
   db:
     image: postgres:15-alpine
     container_name: "auth_db"
-    #    env_file:
-    #      - ./.env
+    networks:
+      migration:
+        aliases:
+          - database
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
     expose:
-      - 5433
+      - "5432:5432"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d qtr_portal -U qtr_portal" ]
       interval: 5s
       retries: 5
     restart: always
 
-  #  redis:
-  #    image: redis
-  # kafka ?
+  migrate:
+    image: migrate/migrate
+    networks:
+      - migration
+    volumes:
+      - .:/migrations
+    command: [ "-path", "/migrations", "-database",  "postgres://postgres:postgres@db:5432/postgres?sslmode=disable", "up" ]
+    links:
+      - db
+    depends_on:
+      - db
+
+networks:
+  migration:
 
 volumes:
   postgres_data:
