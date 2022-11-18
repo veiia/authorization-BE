@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddOAuthRoute(rg *gin.RouterGroup) {
+func AddRoute(rg *gin.RouterGroup) {
 	session := rg.Group("/oauth")
 
 	session.GET("/", pongFunction)

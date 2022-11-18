@@ -12,8 +12,6 @@ import (
 	"github.com/syth0le/authorization-BE/internal/handlers/oauth"
 	"github.com/syth0le/authorization-BE/internal/handlers/session"
 	"github.com/syth0le/authorization-BE/internal/handlers/user"
-	"github.com/syth0le/authorization-BE/internal/repository"
-	"github.com/syth0le/authorization-BE/internal/service"
 	"github.com/syth0le/authorization-BE/pkg/database"
 	"os"
 )
@@ -32,11 +30,11 @@ func CreateRoutes() Routes {
 	}
 
 	v1 := r.router.Group("/v1")
-	v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	session.AddSessionRoute(v1)
-	user.AddUserRoute(v1)
-	oauth.AddOAuthRoute(v1)
+	session.AddRoute(v1)
+	user.AddRoute(v1)
+	oauth.AddRoute(v1)
 
 	return r
 }
@@ -63,8 +61,9 @@ func ConfigureApp() string {
 	if err != nil {
 		logrus.Fatalf("error db connection: %s", err.Error())
 	}
-	repos := repository.NewRepository(db)
-	_ = service.NewService(repos)
-	//handlers := handlers.NewHandler
+	_ = db
+	//repos := repository.NewRepository(db)
+	//service := service.NewService(repos)
+	//_ = handlers.NewHandler(service)
 	return port
 }

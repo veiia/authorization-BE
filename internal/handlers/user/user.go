@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func AddUserRoute(rg *gin.RouterGroup) {
+func AddRoute(rg *gin.RouterGroup) {
 	session := rg.Group("/user")
 
 	session.POST("/sign-up", signUp)
@@ -19,6 +19,16 @@ func signUp(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
+
+	//id, err := authCreateUser(input)
+	id := 1
+	//if err != nil {
+	//	utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	//}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
 }
 
 func signIn(c *gin.Context) {
