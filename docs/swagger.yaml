@@ -20,9 +20,42 @@ definitions:
       id:
         type: integer
     type: object
+  userModel.UserSignIn:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
 info:
   contact: {}
 paths:
+  /user/list:
+    get:
+      consumes:
+      - application/json
+      description: get list of users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userModel.UserIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get users
+      tags:
+      - user
   /user/sign-in:
     post:
       consumes:
@@ -34,7 +67,7 @@ paths:
         name: message
         required: true
         schema:
-          $ref: '#/definitions/userModel.User'
+          $ref: '#/definitions/userModel.UserSignIn'
       produces:
       - application/json
       responses:

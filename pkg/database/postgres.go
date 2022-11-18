@@ -10,6 +10,8 @@ const (
 	UsersTable = "users"
 )
 
+var DB *sqlx.DB
+
 type Config struct {
 	Host     string
 	Port     string
@@ -30,5 +32,6 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 		return nil, err
 	}
 
+	DB = db
 	return db, nil
 }
