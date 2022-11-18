@@ -7,3 +7,7 @@ type User struct {
 	Password string `json:"password" binding:"required"`
 	Email    string `json:"email" binding:"required"`
 }
+
+type UserIdResponse struct {
+	Id int `json:"id"`
+}

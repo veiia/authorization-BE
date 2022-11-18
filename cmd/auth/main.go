@@ -15,11 +15,9 @@ func main() {
 	docs.SwaggerInfo.Host = "localhost:8008"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
-	port := app.ConfigureApp()
-	r := app.CreateRoutes()
+	r := app.ConfigureApp()
 
-	err := r.Run(port)
-
+	err := r.Run(r.Port)
 	if err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}

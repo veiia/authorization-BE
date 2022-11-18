@@ -7,13 +7,6 @@ import (
 	"net/http"
 )
 
-func AddRoute(rg *gin.RouterGroup) {
-	session := rg.Group("/user")
-
-	session.POST("/sign-up", signUp)
-	session.POST("/sign-in", signIn)
-}
-
 func signUp(c *gin.Context) {
 	var input userModel.User
 	if err := c.BindJSON(&input); err != nil {
@@ -25,10 +18,8 @@ func signUp(c *gin.Context) {
 	//if err != nil {
 	//	utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 	//}
-
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
-	})
+	response := userModel.UserIdResponse{Id: id}
+	c.JSON(http.StatusOK, response)
 }
 
 func signIn(c *gin.Context) {
