@@ -44,7 +44,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/userModel.UserIdResponse'
+            items:
+              $ref: '#/definitions/userModel.User'
+            type: array
         "400":
           description: Bad Request
           schema:

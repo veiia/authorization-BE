@@ -33,7 +33,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/userModel.UserIdResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/userModel.User"
+                            }
                         }
                     },
                     "400": {

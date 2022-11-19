@@ -55,7 +55,7 @@ func signInHandler(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 //
-//	@Success      200         {object}  userModel.UserIdResponse
+//	@Success      200         {object}  []userModel.User
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
