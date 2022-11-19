@@ -1,4 +1,121 @@
+definitions:
+  userModel.User:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  userModel.UserIdResponse:
+    properties:
+      id:
+        type: integer
+    type: object
+  userModel.UserSignIn:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /user/list:
+    get:
+      consumes:
+      - application/json
+      description: get list of users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/userModel.User'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get users
+      tags:
+      - user
+  /user/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: sign in
+      parameters:
+      - description: User Info
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/userModel.UserSignIn'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userModel.UserIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign in user
+      tags:
+      - user
+  /user/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: sign up
+      parameters:
+      - description: User Info
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/userModel.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/userModel.UserIdResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign up user
+      tags:
+      - user
 swagger: "2.0"
