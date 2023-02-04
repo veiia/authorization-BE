@@ -1,33 +1,42 @@
 package app
 
 import (
-	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/syth0le/authorization-BE/internal/handlers/oauth"
-	"github.com/syth0le/authorization-BE/internal/handlers/session"
-	"github.com/syth0le/authorization-BE/internal/handlers/user"
+	"fmt"
+	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
+	"github.com/syth0le/authorization-BE/config"
+	"github.com/syth0le/authorization-BE/internal/handlers"
+	"github.com/syth0le/authorization-BE/pkg/database"
+	"os"
 )
 
-type Routes struct {
-	router *gin.Engine
-}
+var db *sqlx.DB
 
-func (r Routes) Run(addr ...string) error {
-	return r.router.Run(addr...)
-}
-
-func CreateRoutes() Routes {
-	r := Routes{
-		router: gin.Default(),
+func ConfigureApp() handlers.Routes {
+	if err := config.InitConfig(); err != nil {
+		logrus.Fatalf("error init configs: %s", err.Error())
 	}
 
-	v1 := r.router.Group("/v1")
-	v1.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	port := fmt.Sprintf(":%s", viper.GetString("port"))
 
-	session.AddSessionRoute(v1)
-	user.AddUserRoute(v1)
-	oauth.AddOAuthRoute(v1)
+	if err := godotenv.Load(); err != nil {
+		logrus.Fatalf("error loading env variables: %s", err.Error())
+	}
 
-	return r
+	_, err := database.NewPostgresDB(database.Config{
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.ssl_mode"),
+		Password: os.Getenv("DB_PASSWORD"),
+	})
+	if err != nil {
+		logrus.Fatalf("error db connection: %s", err.Error())
+	}
+
+	r := handlers.NewRoutes(port)
+	return r.CreateRoutes()
 }

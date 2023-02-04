@@ -1,8 +1,12 @@
 package service
 
-import "github.com/syth0le/authorization-BE/internal/repository"
+import (
+	userModel "github.com/syth0le/authorization-BE/internal/domain/core"
+	"github.com/syth0le/authorization-BE/internal/repository"
+)
 
 type Authorization interface {
+	CreateUser(user userModel.User) (int, error)
 }
 
 type Service struct {
@@ -10,5 +14,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
