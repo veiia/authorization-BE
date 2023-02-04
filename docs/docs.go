@@ -16,9 +16,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user/list": {
+        "/v1/jwt/get": {
             "get": {
-                "description": "get list of users",
+                "description": "get existing jwt token for user",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,17 +26,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "jwt"
                 ],
-                "summary": "Get users",
+                "summary": "get jwt token",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/userModel.User"
-                            }
+                            "$ref": "#/definitions/jwtModel.JWTTokenResponse"
                         }
                     },
                     "400": {
@@ -54,9 +51,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/sign-in": {
-            "post": {
-                "description": "sign in",
+        "/v1/jwt/revoke": {
+            "delete": {
+                "description": "revoke existing jwt token for user",
                 "consumes": [
                     "application/json"
                 ],
@@ -64,25 +61,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "jwt"
                 ],
-                "summary": "Sign in user",
-                "parameters": [
-                    {
-                        "description": "User Info",
-                        "name": "message",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/userModel.UserSignIn"
-                        }
-                    }
-                ],
+                "summary": "revoke jwt token",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/userModel.UserIdResponse"
+                            "$ref": "#/definitions/jwtModel.JWTTokenResponse"
                         }
                     },
                     "400": {
@@ -100,9 +86,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/sign-up": {
+        "/v1/jwt/update": {
             "post": {
-                "description": "sign up",
+                "description": "update existing jwt token for user",
                 "consumes": [
                     "application/json"
                 ],
@@ -110,9 +96,44 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "user"
+                    "jwt"
                 ],
-                "summary": "Sign up user",
+                "summary": "update jwt token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/jwtModel.JWTTokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/log-out": {
+            "post": {
+                "description": "route for logging out from veiia system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "core"
+                ],
+                "summary": "Log Out core",
                 "parameters": [
                     {
                         "description": "User Info",
@@ -120,7 +141,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/userModel.User"
+                            "$ref": "#/definitions/coreModel.UserLogOutRequest"
                         }
                     }
                 ],
@@ -128,7 +149,99 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/userModel.UserIdResponse"
+                            "$ref": "#/definitions/coreModel.UserIdResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sign-in": {
+            "post": {
+                "description": "route for signing in to veiia system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "core"
+                ],
+                "summary": "Sign in core",
+                "parameters": [
+                    {
+                        "description": "User Info",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/coreModel.UserSignInRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/coreModel.UserIdResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/sign-up": {
+            "post": {
+                "description": "route for signing up to veiia system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "core"
+                ],
+                "summary": "Sign up core",
+                "parameters": [
+                    {
+                        "description": "User Info",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/coreModel.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/coreModel.UserIdResponse"
                         }
                     },
                     "400": {
@@ -148,7 +261,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "userModel.User": {
+        "coreModel.User": {
             "type": "object",
             "required": [
                 "email",
@@ -171,7 +284,7 @@ const docTemplate = `{
                 }
             }
         },
-        "userModel.UserIdResponse": {
+        "coreModel.UserIdResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -179,7 +292,7 @@ const docTemplate = `{
                 }
             }
         },
-        "userModel.UserSignIn": {
+        "coreModel.UserLogOutRequest": {
             "type": "object",
             "required": [
                 "password",
@@ -190,6 +303,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "coreModel.UserSignInRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "jwtModel.JWTTokenResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
                     "type": "string"
                 }
             }

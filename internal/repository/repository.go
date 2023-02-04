@@ -1,7 +1,7 @@
 package repository
 
 import (
-	userModel "github.com/syth0le/authorization-BE/internal/domain/user"
+	userModel "github.com/syth0le/authorization-BE/internal/domain/core"
 )
 
 type Authorization interface {
@@ -11,9 +11,3 @@ type Authorization interface {
 type Repository struct {
 	Authorization
 }
-
-//func NewRepository(db *sqlx.DB) *Repository {
-//	return &Repository{
-//		Authorization: NewAuthPostgres(db),
-//	}
-//}

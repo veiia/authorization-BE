@@ -4,9 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/syth0le/authorization-BE/internal/handlers/oauth"
-	"github.com/syth0le/authorization-BE/internal/handlers/session"
-	"github.com/syth0le/authorization-BE/internal/handlers/user"
+	"github.com/syth0le/authorization-BE/internal/handlers/core"
+	"github.com/syth0le/authorization-BE/internal/handlers/jwt"
 )
 
 type Routes struct {
@@ -30,9 +29,7 @@ func (r Routes) CreateRoutes() Routes {
 	v1 := r.router.Group("/v1")
 	v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	session.AddRouter(v1)
-	user.AddRouter(v1)
-	oauth.AddRouter(v1)
-
+	core.AddRouter(v1)
+	jwt.AddRouter(v1)
 	return r
 }

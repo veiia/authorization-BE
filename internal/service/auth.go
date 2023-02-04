@@ -3,7 +3,7 @@ package service
 import (
 	"crypto/sha1"
 	"fmt"
-	userModel "github.com/syth0le/authorization-BE/internal/domain/user"
+	userModel "github.com/syth0le/authorization-BE/internal/domain/core"
 	"github.com/syth0le/authorization-BE/internal/repository"
 )
 

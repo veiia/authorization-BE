@@ -2,19 +2,10 @@ package repository
 
 import (
 	"fmt"
-	"github.com/jmoiron/sqlx"
 	"github.com/sirupsen/logrus"
-	userModel "github.com/syth0le/authorization-BE/internal/domain/user"
+	userModel "github.com/syth0le/authorization-BE/internal/domain/core"
 	"github.com/syth0le/authorization-BE/pkg/database"
 )
-
-type AuthPostgres struct {
-	db *sqlx.DB
-}
-
-func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
-	return &AuthPostgres{db: db}
-}
 
 func CreateUser(user userModel.User) (int, error) {
 	var id int

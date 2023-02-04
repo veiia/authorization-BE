@@ -1,15 +1,15 @@
-package user
+package core
 
 import (
 	"github.com/gin-gonic/gin"
-	userModel "github.com/syth0le/authorization-BE/internal/domain/user"
+	coreModel "github.com/syth0le/authorization-BE/internal/domain/core"
 	"github.com/syth0le/authorization-BE/internal/repository"
 	"github.com/syth0le/authorization-BE/pkg/utils"
 	"net/http"
 )
 
 func signUp(c *gin.Context) {
-	var input userModel.User
+	var input coreModel.User
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
@@ -18,12 +18,19 @@ func signUp(c *gin.Context) {
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
-	response := userModel.UserIdResponse{Id: id}
+	response := coreModel.UserIdResponse{Id: id}
 	c.JSON(http.StatusOK, response)
 }
 
 func signIn(c *gin.Context) {
-	var input userModel.UserSignIn
+	var input coreModel.UserSignInRequest
+	if err := c.BindJSON(&input); err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+}
+
+func logOut(c *gin.Context) {
+	var input coreModel.UserLogOutRequest
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}

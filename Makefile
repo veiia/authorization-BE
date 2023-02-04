@@ -4,10 +4,10 @@ swagger:
 	swag init -g cmd/auth/main.go
 
 build: swagger
-	docker-compose build auth-app
+	docker-compose build auth-app # TODO: fixme
 
 run: swagger
-	docker-compose up -d auth-app
+	docker-compose up -d auth-app # TODO: fixme
 
 complex-run: swagger
 	docker-compose up -d --build
