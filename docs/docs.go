@@ -258,6 +258,41 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/users": {
+            "get": {
+                "description": "route for TEST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "TEST"
+                ],
+                "summary": "TEST route",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/coreModel.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -295,13 +330,9 @@ const docTemplate = `{
         "coreModel.UserLogOutRequest": {
             "type": "object",
             "required": [
-                "password",
                 "username"
             ],
             "properties": {
-                "password": {
-                    "type": "string"
-                },
                 "username": {
                     "type": "string"
                 }

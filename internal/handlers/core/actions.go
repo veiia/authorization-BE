@@ -9,7 +9,7 @@ import (
 )
 
 func signUp(c *gin.Context) {
-	var input coreModel.User
+	var input coreModel.UserSignUpRequest
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
@@ -18,7 +18,7 @@ func signUp(c *gin.Context) {
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
-	response := coreModel.UserIdResponse{Id: id}
+	response := coreModel.UserIdResponse{Id: id} // TODO: return JWTToken
 	c.JSON(http.StatusOK, response)
 }
 
@@ -27,6 +27,11 @@ func signIn(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
+	response, err := repository.CheckUserSignIn(input)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, "Wrong password or login. Try again")
+	}
+	c.JSON(http.StatusOK, response) // TODO: return JWTToken
 }
 
 func logOut(c *gin.Context) {
@@ -34,4 +39,13 @@ func logOut(c *gin.Context) {
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
+}
+
+// for test
+func getUsers(c *gin.Context) {
+	users, err := repository.GetUsers()
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, users)
 }

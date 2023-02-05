@@ -10,6 +10,7 @@ func AddRouter(rg *gin.RouterGroup) {
 	r.POST("/sign-up", signUpHandler)
 	r.POST("/sign-in", signInHandler)
 	r.POST("/log-out", logOutHandler)
+	r.GET("/users", getUsersHandler)
 }
 
 // SignUp godoc
@@ -61,4 +62,20 @@ func signInHandler(c *gin.Context) {
 // @Router       /v1/log-out [post]
 func logOutHandler(c *gin.Context) {
 	logOut(c)
+}
+
+// TEST godoc
+// @Summary      TEST route
+// @Description  route for TEST
+// @Tags         TEST
+// @Accept       json
+// @Produce      json
+//
+//	@Success      200         {object}  coreModel.User
+//	@Failure      400         {string}  string  "Bad Request"
+//	@Failure      500         {string}  string  "Internal Server Error"
+//
+// @Router       /v1/users [get]
+func getUsersHandler(c *gin.Context) {
+	getUsers(c)
 }
