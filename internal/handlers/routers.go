@@ -26,7 +26,7 @@ func (r Routes) Run(addr ...string) error {
 
 func (r Routes) CreateRoutes() Routes {
 
-	v1 := r.router.Group("/v1")
+	v1 := r.router.Group("/v1/auth")
 	v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	core.AddRouter(v1)

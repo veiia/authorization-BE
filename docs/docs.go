@@ -16,7 +16,59 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/jwt/get": {
+        "/v1/auth/jwt/alive": {
+            "post": {
+                "description": "check if jwt token alive return json response, else 401 Unauthorized",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jwt"
+                ],
+                "summary": "check jwt token status",
+                "parameters": [
+                    {
+                        "description": "auth params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/jwtModel.JWTTokenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/jwtModel.JWTTokenResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized. JWT Expired",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/jwt/get": {
             "get": {
                 "description": "get existing jwt token for user",
                 "consumes": [
@@ -51,7 +103,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/jwt/revoke": {
+        "/v1/auth/jwt/revoke": {
             "delete": {
                 "description": "revoke existing jwt token for user",
                 "consumes": [
@@ -64,6 +116,17 @@ const docTemplate = `{
                     "jwt"
                 ],
                 "summary": "revoke jwt token",
+                "parameters": [
+                    {
+                        "description": "auth params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/jwtModel.JWTTokenRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -86,7 +149,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/jwt/update": {
+        "/v1/auth/jwt/update": {
             "post": {
                 "description": "update existing jwt token for user",
                 "consumes": [
@@ -99,6 +162,17 @@ const docTemplate = `{
                     "jwt"
                 ],
                 "summary": "update jwt token",
+                "parameters": [
+                    {
+                        "description": "auth params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/jwtModel.JWTTokenRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -121,7 +195,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/log-out": {
+        "/v1/auth/log-out": {
             "post": {
                 "description": "route for logging out from veiia system",
                 "consumes": [
@@ -167,7 +241,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/sign-in": {
+        "/v1/auth/sign-in": {
             "post": {
                 "description": "route for signing in to veiia system",
                 "consumes": [
@@ -213,7 +287,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/sign-up": {
+        "/v1/auth/sign-up": {
             "post": {
                 "description": "route for signing up to veiia system",
                 "consumes": [
@@ -259,7 +333,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users": {
+        "/v1/auth/users": {
             "get": {
                 "description": "route for TEST",
                 "consumes": [
@@ -353,10 +427,28 @@ const docTemplate = `{
                 }
             }
         },
+        "jwtModel.JWTTokenRequest": {
+            "type": "object",
+            "required": [
+                "token",
+                "user_id"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
         "jwtModel.JWTTokenResponse": {
             "type": "object",
             "properties": {
                 "token": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

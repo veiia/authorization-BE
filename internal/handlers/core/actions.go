@@ -9,7 +9,7 @@ import (
 )
 
 func signUp(c *gin.Context) {
-	var input coreModel.UserSignUpRequest
+	var input coreModel.SignUpRequest
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
@@ -23,19 +23,19 @@ func signUp(c *gin.Context) {
 }
 
 func signIn(c *gin.Context) {
-	var input coreModel.UserSignInRequest
+	var input coreModel.SignInRequest
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
 	response, err := repository.CheckUserSignIn(input)
 	if err != nil {
-		utils.NewErrorResponse(c, http.StatusBadRequest, "Wrong password or login. Try again")
+		utils.NewErrorResponse(c, http.StatusBadRequest, "Wrong password or sign-in. Try again")
 	}
 	c.JSON(http.StatusOK, response) // TODO: return JWTToken
 }
 
-func logOut(c *gin.Context) {
-	var input coreModel.UserLogOutRequest
+func signOut(c *gin.Context) {
+	var input coreModel.SignOutRequest
 	if err := c.BindJSON(&input); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}

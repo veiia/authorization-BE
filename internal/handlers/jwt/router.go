@@ -7,41 +7,26 @@ import (
 func AddRouter(rg *gin.RouterGroup) {
 	r := rg.Group("/jwt")
 
-	r.GET("/get", getJWTTokenHandler)
-	r.POST("/update", updateJWTTokenHandler)
+	r.POST("/refresh", refreshJWTTokenHandler)
 	r.DELETE("/revoke", revokeJWTTokenHandler)
-}
-
-// GetJWTToken godoc
-// @Summary      get jwt token
-// @Description  get existing jwt token for user
-// @Tags         jwt
-// @Accept       json
-// @Produce      json
-//
-//	@Success      200         {object}  jwtModel.JWTTokenResponse
-//	@Failure      400         {string}  string  "Bad Request"
-//	@Failure      500         {string}  string  "Internal Server Error"
-//
-// @Router       /v1/jwt/get [get]
-func getJWTTokenHandler(c *gin.Context) {
-	getJWTToken(c)
+	r.POST("/alive", isJWTTokenAliveHandler)
 }
 
 // UpdateJWTToken godoc
-// @Summary      update jwt token
+// @Summary      refresh jwt token
 // @Description  update existing jwt token for user
 // @Tags         jwt
 // @Accept       json
 // @Produce      json
+// @Param request body jwtModel.JWTTokenRequest true "auth params"
 //
 //	@Success      200         {object}  jwtModel.JWTTokenResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
-// @Router       /v1/jwt/update [post]
-func updateJWTTokenHandler(c *gin.Context) {
-	updateJWTToken(c)
+// @Router       /v1/auth/jwt/refresh [post]
+func refreshJWTTokenHandler(c *gin.Context) {
+	refreshJWTToken(c)
 }
 
 // revokeJWTTokenHandler godoc
@@ -50,12 +35,31 @@ func updateJWTTokenHandler(c *gin.Context) {
 // @Tags         jwt
 // @Accept       json
 // @Produce      json
+// @Param request body jwtModel.JWTTokenRequest true "auth params"
 //
 //	@Success      200         {object}  jwtModel.JWTTokenResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
-// @Router       /v1/jwt/revoke [delete]
+// @Router       /v1/auth/jwt/revoke [delete]
 func revokeJWTTokenHandler(c *gin.Context) {
 	revokeJWTToken(c)
+}
+
+// isJWTTokenAliveHandler godoc
+// @Summary      check jwt token status
+// @Description  check if jwt token alive return json response, else 401 Unauthorized
+// @Tags         jwt
+// @Accept       json
+// @Produce      json
+// @Param request body jwtModel.JWTTokenRequest true "auth params"
+//
+//	@Success      200         {object}  jwtModel.JWTTokenResponse
+//	@Failure      400         {string}  string  "Bad Request"
+//	@Failure      401         {string}  string  "Unauthorized. JWT Expired"
+//	@Failure      500         {string}  string  "Internal Server Error"
+//
+// @Router       /v1/auth/jwt/alive [post]
+func isJWTTokenAliveHandler(c *gin.Context) {
+	isJWTTokenAlive(c)
 }

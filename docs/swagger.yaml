@@ -37,15 +37,61 @@ definitions:
     - password
     - username
     type: object
+  jwtModel.JWTTokenRequest:
+    properties:
+      token:
+        type: string
+      user_id:
+        type: string
+    required:
+    - token
+    - user_id
+    type: object
   jwtModel.JWTTokenResponse:
     properties:
       token:
+        type: string
+      user_id:
         type: string
     type: object
 info:
   contact: {}
 paths:
-  /v1/jwt/get:
+  /v1/auth/jwt/alive:
+    post:
+      consumes:
+      - application/json
+      description: check if jwt token alive return json response, else 401 Unauthorized
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwtModel.JWTTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized. JWT Expired
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: check jwt token status
+      tags:
+      - jwt
+  /v1/auth/jwt/get:
     get:
       consumes:
       - application/json
@@ -68,11 +114,18 @@ paths:
       summary: get jwt token
       tags:
       - jwt
-  /v1/jwt/revoke:
+  /v1/auth/jwt/revoke:
     delete:
       consumes:
       - application/json
       description: revoke existing jwt token for user
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
       produces:
       - application/json
       responses:
@@ -91,11 +144,18 @@ paths:
       summary: revoke jwt token
       tags:
       - jwt
-  /v1/jwt/update:
+  /v1/auth/jwt/update:
     post:
       consumes:
       - application/json
       description: update existing jwt token for user
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
       produces:
       - application/json
       responses:
@@ -114,7 +174,7 @@ paths:
       summary: update jwt token
       tags:
       - jwt
-  /v1/log-out:
+  /v1/auth/log-out:
     post:
       consumes:
       - application/json
@@ -144,7 +204,7 @@ paths:
       summary: Log Out core
       tags:
       - core
-  /v1/sign-in:
+  /v1/auth/sign-in:
     post:
       consumes:
       - application/json
@@ -174,7 +234,7 @@ paths:
       summary: Sign in core
       tags:
       - core
-  /v1/sign-up:
+  /v1/auth/sign-up:
     post:
       consumes:
       - application/json
@@ -204,7 +264,7 @@ paths:
       summary: Sign up core
       tags:
       - core
-  /v1/users:
+  /v1/auth/users:
     get:
       consumes:
       - application/json
