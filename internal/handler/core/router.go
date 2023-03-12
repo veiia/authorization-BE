@@ -19,9 +19,9 @@ func AddRouter(rg *gin.RouterGroup) {
 // @Tags         core
 // @Accept       json
 // @Produce      json
-// @Param        message  body      coreModel.User  true  "User Info"
+// @Param        message  body      coreModel.SignUpRequest  true  "User Info"
 //
-//	@Success      200         {object}  coreModel.UserIdResponse
+//	@Success      200         {object}  coreModel.SignUpResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -36,9 +36,9 @@ func signUpHandler(c *gin.Context) {
 // @Tags         core
 // @Accept       json
 // @Produce      json
-// @Param        message  body      coreModel.UserSignInRequest  true  "User Info"
+// @Param        message  body      coreModel.SignInRequest  true  "User Info"
 //
-//	@Success      200         {object}  coreModel.UserIdResponse
+//	@Success      200         {object}  coreModel.SignInResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -49,13 +49,13 @@ func signInHandler(c *gin.Context) {
 
 // signOut godoc
 // @Summary      Sign Out core
-// @Description  route for signging out from veiia system
+// @Description  route for signing out from veiia system
 // @Tags         core
 // @Accept       json
 // @Produce      json
-// @Param        message  body      coreModel.UsersignOutRequest  true  "User Info"
+// @Param        message  body      coreModel.SignOutRequest  true  "User Info"
 //
-//	@Success      200         {object}  coreModel.UserIdResponse
+//	@Success      200         {object}  coreModel.MessageResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //

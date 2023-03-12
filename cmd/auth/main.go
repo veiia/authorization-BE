@@ -12,10 +12,9 @@ func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 	configureSwaggerInfo()
 
-	r := app.ConfigureApp()
+	app := app.NewApp()
 
-	err := r.Run(r.Port)
-	if err != nil {
+	if err := app.Run(viper.GetString("port")); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }

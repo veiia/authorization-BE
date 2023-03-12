@@ -20,7 +20,7 @@ func AddRouter(rg *gin.RouterGroup) {
 // @Produce      json
 // @Param request body jwtModel.JWTTokenRequest true "auth params"
 //
-//	@Success      200         {object}  jwtModel.JWTTokenResponse
+//	@Success      200         {object}  jwtModel.JwtTokenRefreshResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -37,7 +37,7 @@ func refreshJWTTokenHandler(c *gin.Context) {
 // @Produce      json
 // @Param request body jwtModel.JWTTokenRequest true "auth params"
 //
-//	@Success      200         {object}  jwtModel.JWTTokenResponse
+//	@Success      200         {object}  jwtModel.MessageResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
@@ -54,7 +54,7 @@ func revokeJWTTokenHandler(c *gin.Context) {
 // @Produce      json
 // @Param request body jwtModel.JWTTokenRequest true "auth params"
 //
-//	@Success      200         {object}  jwtModel.JWTTokenResponse
+//	@Success      200         {object}  jwtModel.JWTTokenAliveResponse
 //	@Failure      400         {string}  string  "Bad Request"
 //	@Failure      401         {string}  string  "Unauthorized. JWT Expired"
 //	@Failure      500         {string}  string  "Internal Server Error"
