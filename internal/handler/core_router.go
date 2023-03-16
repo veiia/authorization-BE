@@ -1,16 +1,17 @@
-package core
+package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/syth0le/authorization-BE/internal/handler/core"
 )
 
-func AddRouter(rg *gin.RouterGroup) {
+func AddCoreRouter(rg *gin.RouterGroup, h *Handler) {
 	r := rg.Group("/")
 
-	r.POST("/sign-up", signUpHandler)
-	r.POST("/sign-in", signInHandler)
-	r.POST("/sign-out", signOutHandler)
-	r.GET("/users", getUsersHandler)
+	r.POST("/sign-up", h.signUpHandler)
+	r.POST("/sign-in", h.signInHandler)
+	r.POST("/sign-out", h.signOutHandler)
+	r.GET("/users", h.getUsersHandler)
 }
 
 // SignUp godoc
@@ -26,8 +27,8 @@ func AddRouter(rg *gin.RouterGroup) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/sign-up [post]
-func signUpHandler(c *gin.Context) {
-	signUp(c)
+func (h *Handler) signUpHandler(c *gin.Context) {
+	core.SignUp(c, h)
 }
 
 // SignIn godoc
@@ -43,8 +44,8 @@ func signUpHandler(c *gin.Context) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/sign-in [post]
-func signInHandler(c *gin.Context) {
-	signIn(c)
+func (h *Handler) signInHandler(c *gin.Context) {
+	core.SignIn(c, h)
 }
 
 // signOut godoc
@@ -60,8 +61,8 @@ func signInHandler(c *gin.Context) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/sign-out [post]
-func signOutHandler(c *gin.Context) {
-	signOut(c)
+func (h *Handler) signOutHandler(c *gin.Context) {
+	core.SignOut(c, h)
 }
 
 // TEST godoc
@@ -76,6 +77,6 @@ func signOutHandler(c *gin.Context) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/users [get]
-func getUsersHandler(c *gin.Context) {
-	getUsers(c)
+func (h *Handler) getUsersHandler(c *gin.Context) {
+	core.GetUsers(c, h)
 }

@@ -15,7 +15,7 @@ type MessageResponse struct {
 }
 
 type SignUpResponse struct {
-	Username        int    `json:"username"`
+	Username        string `json:"username"`
 	JwtToken        string `json:"jwt_token"`
 	IsAliveJwtToken bool   `json:"is_alive_jwt_token"`
 }

@@ -3,11 +3,12 @@ package jwt
 import (
 	"github.com/gin-gonic/gin"
 	jwtModel "github.com/syth0le/authorization-BE/internal/domain/jwt"
+	"github.com/syth0le/authorization-BE/internal/handler"
 	"github.com/syth0le/authorization-BE/pkg/utils"
 	"net/http"
 )
 
-func refreshJWTToken(c *gin.Context) {
+func RefreshJWTToken(c *gin.Context, h *handler.Handler) {
 	var requestBody jwtModel.JWTTokenRequest
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -17,7 +18,7 @@ func refreshJWTToken(c *gin.Context) {
 	c.JSON(http.StatusOK, requestBody)
 }
 
-func revokeJWTToken(c *gin.Context) {
+func RevokeJWTToken(c *gin.Context, h *handler.Handler) {
 	var requestBody jwtModel.JWTTokenRequest
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -27,7 +28,7 @@ func revokeJWTToken(c *gin.Context) {
 	c.JSON(http.StatusNoContent, jwtModel.MessageResponse{Message: "JWT Token was revoked"})
 }
 
-func isJWTTokenAlive(c *gin.Context) {
+func IsJWTTokenAlive(c *gin.Context, h *handler.Handler) {
 	var requestBody jwtModel.JWTTokenRequest
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {

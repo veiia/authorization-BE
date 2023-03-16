@@ -1,15 +1,16 @@
-package jwt
+package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/syth0le/authorization-BE/internal/handler/jwt"
 )
 
-func AddRouter(rg *gin.RouterGroup) {
+func AddJwtRouter(rg *gin.RouterGroup, h *Handler) {
 	r := rg.Group("/jwt")
 
-	r.POST("/refresh", refreshJWTTokenHandler)
-	r.DELETE("/revoke", revokeJWTTokenHandler)
-	r.POST("/alive", isJWTTokenAliveHandler)
+	r.POST("/refresh", h.refreshJWTTokenHandler)
+	r.DELETE("/revoke", h.revokeJWTTokenHandler)
+	r.POST("/alive", h.isJWTTokenAliveHandler)
 }
 
 // UpdateJWTToken godoc
@@ -25,8 +26,8 @@ func AddRouter(rg *gin.RouterGroup) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/jwt/refresh [post]
-func refreshJWTTokenHandler(c *gin.Context) {
-	refreshJWTToken(c)
+func (h *Handler) refreshJWTTokenHandler(c *gin.Context) {
+	jwt.RefreshJWTToken(c, h)
 }
 
 // revokeJWTTokenHandler godoc
@@ -42,8 +43,8 @@ func refreshJWTTokenHandler(c *gin.Context) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/jwt/revoke [delete]
-func revokeJWTTokenHandler(c *gin.Context) {
-	revokeJWTToken(c)
+func (h *Handler) revokeJWTTokenHandler(c *gin.Context) {
+	jwt.RevokeJWTToken(c, h)
 }
 
 // isJWTTokenAliveHandler godoc
@@ -60,6 +61,6 @@ func revokeJWTTokenHandler(c *gin.Context) {
 //	@Failure      500         {string}  string  "Internal Server Error"
 //
 // @Router       /v1/auth/jwt/alive [post]
-func isJWTTokenAliveHandler(c *gin.Context) {
-	isJWTTokenAlive(c)
+func (h *Handler) isJWTTokenAliveHandler(c *gin.Context) {
+	jwt.IsJWTTokenAlive(c, h)
 }
