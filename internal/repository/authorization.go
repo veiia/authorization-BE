@@ -41,3 +41,14 @@ func (r *AuthorizationPostgres) GetUsers() ([]userModel.User, error) {
 	}
 	return users, nil
 }
+
+//UPDATE customers
+//SET first_name = 'Joseph'
+//WHERE customer_id = 8000;
+
+//UPDATE suppliers
+//SET supplier_id   = 150,
+//supplier_name = 'Apple',
+//city          = 'Cupertino'
+//state         = 'California'
+//WHERE supplier_name = 'Google';
