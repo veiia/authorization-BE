@@ -56,11 +56,13 @@ definitions:
       jwt_token:
         type: string
       username:
-        type: integer
+        type: string
     type: object
   coreModel.User:
     properties:
       email:
+        type: string
+      last_login:
         type: string
       name:
         type: string
@@ -70,6 +72,7 @@ definitions:
         type: string
     required:
     - email
+    - last_login
     - name
     - password
     - username
@@ -79,6 +82,8 @@ definitions:
       alive:
         default: true
         type: boolean
+      token:
+        type: string
     type: object
   jwtModel.JWTTokenRequest:
     properties:
@@ -93,8 +98,6 @@ definitions:
   jwtModel.JwtTokenRefreshResponse:
     properties:
       token:
-        type: string
-      username:
         type: string
     type: object
   jwtModel.MessageResponse:

@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/syth0le/authorization-BE/internal/handler/core"
 )
 
 func AddCoreRouter(rg *gin.RouterGroup, h *Handler) {
@@ -28,7 +27,7 @@ func AddCoreRouter(rg *gin.RouterGroup, h *Handler) {
 //
 // @Router       /v1/auth/sign-up [post]
 func (h *Handler) signUpHandler(c *gin.Context) {
-	core.SignUp(c, h)
+	SignUp(c, h)
 }
 
 // SignIn godoc
@@ -45,7 +44,7 @@ func (h *Handler) signUpHandler(c *gin.Context) {
 //
 // @Router       /v1/auth/sign-in [post]
 func (h *Handler) signInHandler(c *gin.Context) {
-	core.SignIn(c, h)
+	SignIn(c, h)
 }
 
 // signOut godoc
@@ -62,7 +61,7 @@ func (h *Handler) signInHandler(c *gin.Context) {
 //
 // @Router       /v1/auth/sign-out [post]
 func (h *Handler) signOutHandler(c *gin.Context) {
-	core.SignOut(c, h)
+	SignOut(c, h)
 }
 
 // TEST godoc
@@ -78,5 +77,5 @@ func (h *Handler) signOutHandler(c *gin.Context) {
 //
 // @Router       /v1/auth/users [get]
 func (h *Handler) getUsersHandler(c *gin.Context) {
-	core.GetUsers(c, h)
+	GetUsers(c, h)
 }

@@ -1,14 +1,13 @@
-package core
+package handler
 
 import (
 	"github.com/gin-gonic/gin"
 	coreModel "github.com/syth0le/authorization-BE/internal/domain/core"
-	"github.com/syth0le/authorization-BE/internal/handler"
 	"github.com/syth0le/authorization-BE/pkg/utils"
 	"net/http"
 )
 
-func SignUp(c *gin.Context, h *handler.Handler) {
+func SignUp(c *gin.Context, h *Handler) {
 	var request coreModel.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -25,7 +24,7 @@ func SignUp(c *gin.Context, h *handler.Handler) {
 	c.JSON(http.StatusOK, response)
 }
 
-func SignIn(c *gin.Context, h *handler.Handler) {
+func SignIn(c *gin.Context, h *Handler) {
 	var request coreModel.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -42,7 +41,7 @@ func SignIn(c *gin.Context, h *handler.Handler) {
 	c.JSON(http.StatusOK, response)
 }
 
-func SignOut(c *gin.Context, h *handler.Handler) {
+func SignOut(c *gin.Context, h *Handler) {
 	var request coreModel.SignOutRequest
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -55,7 +54,7 @@ func SignOut(c *gin.Context, h *handler.Handler) {
 }
 
 // for test
-func GetUsers(c *gin.Context, h *handler.Handler) {
+func GetUsers(c *gin.Context, h *Handler) {
 	users, err := h.Services.Authorization.GetUsers()
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())

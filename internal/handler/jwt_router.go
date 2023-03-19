@@ -2,7 +2,6 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/syth0le/authorization-BE/internal/handler/jwt"
 )
 
 func AddJwtRouter(rg *gin.RouterGroup, h *Handler) {
@@ -27,7 +26,7 @@ func AddJwtRouter(rg *gin.RouterGroup, h *Handler) {
 //
 // @Router       /v1/auth/jwt/refresh [post]
 func (h *Handler) refreshJWTTokenHandler(c *gin.Context) {
-	jwt.RefreshJWTToken(c, h)
+	RefreshJWTToken(c, h)
 }
 
 // revokeJWTTokenHandler godoc
@@ -44,7 +43,7 @@ func (h *Handler) refreshJWTTokenHandler(c *gin.Context) {
 //
 // @Router       /v1/auth/jwt/revoke [delete]
 func (h *Handler) revokeJWTTokenHandler(c *gin.Context) {
-	jwt.RevokeJWTToken(c, h)
+	RevokeJWTToken(c, h)
 }
 
 // isJWTTokenAliveHandler godoc
@@ -62,5 +61,5 @@ func (h *Handler) revokeJWTTokenHandler(c *gin.Context) {
 //
 // @Router       /v1/auth/jwt/alive [post]
 func (h *Handler) isJWTTokenAliveHandler(c *gin.Context) {
-	jwt.IsJWTTokenAlive(c, h)
+	IsJWTTokenAlive(c, h)
 }

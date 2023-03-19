@@ -11,6 +11,7 @@ import (
 	"github.com/syth0le/authorization-BE/internal/repository"
 	"github.com/syth0le/authorization-BE/internal/server"
 	"github.com/syth0le/authorization-BE/internal/service"
+	"github.com/syth0le/authorization-BE/pkg/database"
 	"os"
 	"os/signal"
 )
@@ -70,17 +71,16 @@ func (a *App) Run(port string) error {
 }
 
 func initDb() *sqlx.DB {
-	//db, err := database.NewPostgresDB(database.Config{
-	//	Host:     viper.GetString("db.host"),
-	//	Port:     viper.GetString("db.port"),
-	//	Username: viper.GetString("db.username"),
-	//	DBName:   viper.GetString("db.dbname"),
-	//	SSLMode:  viper.GetString("db.ssl_mode"),
-	//	Password: os.Getenv("DB_PASSWORD"),
-	//})
-	//if err != nil {
-	//	logrus.Fatalf("error db connection: %s", err.Error())
-	//}
-	//return db
-	return nil
+	db, err := database.NewPostgresDB(database.Config{
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.ssl_mode"),
+		Password: os.Getenv("DB_PASSWORD"),
+	})
+	if err != nil {
+		logrus.Fatalf("error db connection: %s", err.Error())
+	}
+	return db
 }

@@ -408,7 +408,7 @@
                     "type": "string"
                 },
                 "username": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -416,12 +416,16 @@
             "type": "object",
             "required": [
                 "email",
+                "last_login",
                 "name",
                 "password",
                 "username"
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "last_login": {
                     "type": "string"
                 },
                 "name": {
@@ -441,6 +445,9 @@
                 "alive": {
                     "type": "boolean",
                     "default": true
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },
@@ -463,9 +470,6 @@
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }

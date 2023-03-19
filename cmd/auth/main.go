@@ -4,6 +4,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"github.com/syth0le/authorization-BE/config"
 	"github.com/syth0le/authorization-BE/docs"
 	"github.com/syth0le/authorization-BE/internal/app"
 )
@@ -11,10 +12,13 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 	configureSwaggerInfo()
+	if err := config.InitConfig(); err != nil {
+		logrus.Fatalf("error initializing configs: %s", err.Error())
+	}
 
-	app := app.NewApp()
+	AuthApp := app.NewApp()
 
-	if err := app.Run(viper.GetString("port")); err != nil {
+	if err := AuthApp.Run(viper.GetString("port")); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }

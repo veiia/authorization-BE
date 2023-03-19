@@ -420,7 +420,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -428,12 +428,16 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
+                "last_login",
                 "name",
                 "password",
                 "username"
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "last_login": {
                     "type": "string"
                 },
                 "name": {
@@ -453,6 +457,9 @@ const docTemplate = `{
                 "alive": {
                     "type": "boolean",
                     "default": true
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },
@@ -475,9 +482,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "token": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
