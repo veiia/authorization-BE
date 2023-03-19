@@ -13,15 +13,15 @@ func SignUp(c *gin.Context, h *handler.Handler) {
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	userId, err := h.Services.Authorization.CreateUser(request.(coreModel.User))
+	userId, err := h.Services.Authorization.CreateUser(request)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	token, err := h.Services.Authorization.GenerateToken(request.Username, request.Password)
+	token, err := h.Services.Authorization.GenerateToken(userId)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	response := coreModel.SignUpResponse{Username: request.Username, JwtToken: token, IsAliveJwtToken: token.IsAlive}
+	response := coreModel.SignUpResponse{Username: request.Username, JwtToken: token.Token, IsAliveJwtToken: token.IsAlive}
 	c.JSON(http.StatusOK, response)
 }
 
@@ -30,12 +30,12 @@ func SignIn(c *gin.Context, h *handler.Handler) {
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	_, err := h.Services.Authorization.CheckSignIn(request)
+	userId, err := h.Services.Authorization.CheckSignIn(request)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
 
-	response, err := h.Services.Authorization.GenerateToken(request.Username, request.Password) // remake to another params
+	response, err := h.Services.Authorization.GenerateToken(userId)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, "Wrong password or sign-in. Try again")
 	}
@@ -47,18 +47,18 @@ func SignOut(c *gin.Context, h *handler.Handler) {
 	if err := c.BindJSON(&request); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	response, err := h.Services.Authorization.ParseToken()
+	err := h.Services.Authorization.SignOut(request)
 	if err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	c.JSON(http.StatusOK, response)
+	c.Status(http.StatusOK)
 }
 
 // for test
 func GetUsers(c *gin.Context, h *handler.Handler) {
-	//users, err := repository.GetUsers()
-	//if err != nil {
-	//	utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-	//}
-	//c.JSON(http.StatusOK, users)
+	users, err := h.Services.Authorization.GetUsers()
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+	c.JSON(http.StatusOK, users)
 }

@@ -7,15 +7,17 @@ import (
 )
 
 type Authorization interface {
-	CreateUser(user userModel.User) (int, error)
-	GenerateToken(username, password string) (string, error)
-	ParseToken(token string) (int, error)
+	CreateUser(user userModel.SignUpRequest) (int, error)
+	GenerateToken(userId int) (jwtModel.JWTToken, error)
+	SignOut(request userModel.SignOutRequest) error
+	CheckSignIn(request userModel.SignInRequest) (int, error)
+	GetUsers() ([]userModel.User, error)
 }
 
 type JwtToken interface {
 	Alive(request jwtModel.JWTTokenRequest) (jwtModel.JWTTokenAliveResponse, error)
 	Refresh(request jwtModel.JWTTokenRequest) (jwtModel.JwtTokenRefreshResponse, error)
-	Revoke(request jwtModel.JWTTokenRequest) (jwtModel.JwtTokenRefreshResponse, error)
+	Revoke(request jwtModel.JWTTokenRequest) (jwtModel.MessageResponse, error)
 }
 
 type Service struct {

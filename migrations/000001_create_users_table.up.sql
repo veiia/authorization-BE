@@ -17,3 +17,4 @@ CREATE TABLE IF NOT EXISTS tokens (
         FOREIGN KEY(user_id)
             REFERENCES users(id)
 )
+-- TODO: created_in/ deleted_in

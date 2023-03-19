@@ -14,8 +14,11 @@ func RefreshJWTToken(c *gin.Context, h *handler.Handler) {
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-
-	c.JSON(http.StatusOK, requestBody)
+	newToken, err := h.Services.Refresh(requestBody)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+	c.JSON(http.StatusOK, newToken)
 }
 
 func RevokeJWTToken(c *gin.Context, h *handler.Handler) {
@@ -24,8 +27,11 @@ func RevokeJWTToken(c *gin.Context, h *handler.Handler) {
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-
-	c.JSON(http.StatusNoContent, jwtModel.MessageResponse{Message: "JWT Token was revoked"})
+	isRevoked, err := h.Services.Revoke(requestBody)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+	c.JSON(http.StatusNoContent, isRevoked)
 }
 
 func IsJWTTokenAlive(c *gin.Context, h *handler.Handler) {
@@ -34,6 +40,9 @@ func IsJWTTokenAlive(c *gin.Context, h *handler.Handler) {
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
 		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
-
-	c.JSON(http.StatusOK, requestBody)
+	alive, err := h.Services.Alive(requestBody)
+	if err != nil {
+		utils.NewErrorResponse(c, http.StatusBadRequest, err.Error())
+	}
+	c.JSON(http.StatusOK, alive)
 }

@@ -5,10 +5,10 @@ type MessageResponse struct {
 }
 
 type JWTTokenAliveResponse struct {
-	Alive bool `json:"alive" default:"true"`
+	Token string `json:"token"`
+	Alive bool   `json:"alive" default:"true"`
 }
 
 type JwtTokenRefreshResponse struct {
-	Username string `json:"username"`
-	Token    string `json:"token"`
+	Token string `json:"token"`
 }

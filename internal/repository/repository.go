@@ -7,15 +7,17 @@ import (
 )
 
 type Authorization interface {
-	SignUp(request userModel.SignUpRequest) (userModel.SignUpResponse, error)
-	SignIn(request userModel.SignInRequest) (userModel.SignInResponse, error)
-	SignOut(request userModel.SignOutRequest) (userModel.MessageResponse, error)
+	SignUp(request userModel.SignUpRequest) (int, error)
+	SignIn(request userModel.SignInRequest) (int, error)
+	SignOut(request userModel.SignOutRequest) error
+	GetUsers() ([]userModel.User, error)
 }
 
 type JwtToken interface {
-	Alive(request jwtModel.JWTTokenRequest) (jwtModel.JWTTokenAliveResponse, error)
-	Refresh(request jwtModel.JWTTokenRequest) (jwtModel.JwtTokenRefreshResponse, error)
-	Revoke(request jwtModel.JWTTokenRequest) (jwtModel.JwtTokenRefreshResponse, error)
+	Create(request jwtModel.JWTTokenCreateRequest) (jwtModel.JWTToken, error)
+	Revoke(request jwtModel.JWTTokenRequest) (int, error)
+	Get(request jwtModel.JWTTokenRequest) (jwtModel.JWTToken, error)
+	Update(request jwtModel.JWTToken) (jwtModel.JWTToken, error)
 }
 
 type Repository struct {
