@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
      name VARCHAR (255) NOT NULL,
      username VARCHAR (255) NOT NULL UNIQUE,
      encrypted_password VARCHAR NOT NULL,
-     last_login TIMESTAMP
+     last_login TIMESTAMP NULL
 );
 
 CREATE TABLE IF NOT EXISTS tokens (

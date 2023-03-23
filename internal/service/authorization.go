@@ -56,6 +56,7 @@ func (s *AuthorizationService) CheckSignIn(request userModel.SignInRequest) (int
 
 func (s *AuthorizationService) GetUsers() ([]userModel.User, error) {
 	res, err := s.repo.GetUsers()
+	fmt.Printf("%v", res)
 	if err != nil {
 		return nil, err
 	}
