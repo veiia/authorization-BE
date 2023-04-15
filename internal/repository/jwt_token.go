@@ -26,7 +26,7 @@ func (r *JwtTokenPostgres) Create(request jwtModel.JWTTokenCreateRequest) (jwtMo
 	}
 	insertedId, err := ret.LastInsertId()
 
-	query := fmt.Sprintf("SELECT * FROM %s WHERE id=%s", database.TokensTable, insertedId)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id=%d", database.TokensTable, insertedId)
 	if err := r.db.Select(&token, query); err != nil {
 		msg := fmt.Sprintf("TOKEN (%s) NOT FOUND;", "token")
 		logrus.Error(msg, err.Error())
@@ -60,7 +60,7 @@ func (r *JwtTokenPostgres) Get(request jwtModel.JWTTokenRequest) (jwtModel.JWTTo
 
 func (r *JwtTokenPostgres) Update(request jwtModel.JWTToken) (jwtModel.JWTToken, error) {
 	var token jwtModel.JWTToken
-	query := fmt.Sprintf("UPDATE * FROM %s WHERE token=%s", database.TokensTable, request.UserId)
+	query := fmt.Sprintf("UPDATE * FROM %s WHERE token=%d", database.TokensTable, request.UserId)
 	if err := r.db.Select(&token, query); err != nil {
 		logrus.Error("Cannot create token", err.Error())
 		return jwtModel.JWTToken{}, err
