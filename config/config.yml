@@ -6,3 +6,16 @@ db:
   username: "postgres"
   dbname: "postgres"
   ssl_mode: "disable"
+
+swagger:
+  title: "authorization-BE API"
+  version: "1.0"
+  base-path: "/v1"
+  host: "localhost:8008"
+  schemes:
+    - "http"
+    - "https"
+
+auth:
+  salt: "dasdjksdkwnejcnwknwcknwkejrncowd"
+  token_ttl: 86400

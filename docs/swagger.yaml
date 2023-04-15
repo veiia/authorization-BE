@@ -1,4 +1,318 @@
+definitions:
+  coreModel.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  coreModel.SignInRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  coreModel.SignInResponse:
+    properties:
+      is_alive_jwt_token:
+        type: boolean
+      jwt_token:
+        type: string
+      username:
+        type: integer
+    type: object
+  coreModel.SignOutRequest:
+    properties:
+      jwt_token:
+        type: string
+      username:
+        type: string
+    required:
+    - jwt_token
+    - username
+    type: object
+  coreModel.SignUpRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  coreModel.SignUpResponse:
+    properties:
+      is_alive_jwt_token:
+        type: boolean
+      jwt_token:
+        type: string
+      username:
+        type: string
+    type: object
+  coreModel.User:
+    properties:
+      email:
+        type: string
+      last_login:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - last_login
+    - name
+    - password
+    - username
+    type: object
+  jwtModel.JWTTokenAliveResponse:
+    properties:
+      alive:
+        default: true
+        type: boolean
+      token:
+        type: string
+    type: object
+  jwtModel.JWTTokenRequest:
+    properties:
+      token:
+        type: string
+      username:
+        type: string
+    required:
+    - token
+    - username
+    type: object
+  jwtModel.JwtTokenRefreshResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  jwtModel.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /v1/auth/jwt/alive:
+    post:
+      consumes:
+      - application/json
+      description: check if jwt token alive return json response, else 401 Unauthorized
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwtModel.JWTTokenAliveResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "401":
+          description: Unauthorized. JWT Expired
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: check jwt token status
+      tags:
+      - jwt
+  /v1/auth/jwt/refresh:
+    post:
+      consumes:
+      - application/json
+      description: update existing jwt token for user
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwtModel.JwtTokenRefreshResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: refresh jwt token
+      tags:
+      - jwt
+  /v1/auth/jwt/revoke:
+    delete:
+      consumes:
+      - application/json
+      description: revoke existing jwt token for user
+      parameters:
+      - description: auth params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/jwtModel.JWTTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/jwtModel.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: revoke jwt token
+      tags:
+      - jwt
+  /v1/auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: route for signing in to veiia system
+      parameters:
+      - description: User Info
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/coreModel.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/coreModel.SignInResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign in core
+      tags:
+      - core
+  /v1/auth/sign-out:
+    post:
+      consumes:
+      - application/json
+      description: route for signing out from veiia system
+      parameters:
+      - description: User Info
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/coreModel.SignOutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/coreModel.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign Out core
+      tags:
+      - core
+  /v1/auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: route for signing up to veiia system
+      parameters:
+      - description: User Info
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/coreModel.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/coreModel.SignUpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Sign up core
+      tags:
+      - core
+  /v1/auth/users:
+    get:
+      consumes:
+      - application/json
+      description: route for TEST
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/coreModel.User'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: TEST route
+      tags:
+      - TEST
 swagger: "2.0"
