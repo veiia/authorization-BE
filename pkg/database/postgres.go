@@ -7,10 +7,9 @@ import (
 )
 
 const (
-	UsersTable = "users"
+	UsersTable  = "users"
+	TokensTable = "tokens"
 )
-
-var DB *sqlx.DB
 
 type Config struct {
 	Host     string
@@ -27,11 +26,10 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = db.Ping()
-	if err != nil {
+
+	if err = db.Ping(); err != nil {
 		return nil, err
 	}
 
-	DB = db
 	return db, nil
 }

@@ -16,4 +16,6 @@ swagger:
     - "http"
     - "https"
 
-salt: "dasdjksdkwnejcnwknwcknwkejrncowd"
+auth:
+  salt: "dasdjksdkwnejcnwknwcknwkejrncowd"
+  token_ttl: 86400
